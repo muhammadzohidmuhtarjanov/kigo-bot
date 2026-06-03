@@ -89,8 +89,15 @@ async def toggle_sport(callback: CallbackQuery, state: FSMContext):
         selected.append(sport)
 
     await state.update_data(selected_sports=selected)
-    await callback.message.edit_reply_markup(reply_markup=sports_kb(lang, selected))
-    await callback.answer()
+    try:
+        await callback.message.edit_reply_markup(reply_markup=sports_kb(lang, selected))
+    except Exception:
+        pass
+    count = len(selected)
+    if lang == "uz":
+        await callback.answer(f"✅ {count} ta tanlandi" if count else "⬜ Bekor qilindi")
+    else:
+        await callback.answer(f"✅ Выбрано: {count}" if count else "⬜ Снято")
 
 
 @router.callback_query(ProfileFSM.sports, F.data == "sports_done")
@@ -146,13 +153,15 @@ async def get_level(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
 
+_IGNORE_TEXTS = {"👇", "📍 GPS yuborish", "📍 Отправить GPS"}
+
 @router.message(ProfileFSM.city, F.text)
 async def get_city_text(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("lang", "uz")
     city = (message.text or "").strip()
 
-    if not city or len(city) < 2:
+    if not city or len(city) < 2 or city in _IGNORE_TEXTS:
         return
 
     await state.update_data(city=city, lat=None, lon=None)
@@ -192,8 +201,15 @@ async def toggle_time(callback: CallbackQuery, state: FSMContext):
         selected.append(time)
 
     await state.update_data(selected_times=selected)
-    await callback.message.edit_reply_markup(reply_markup=times_kb(lang, selected))
-    await callback.answer()
+    try:
+        await callback.message.edit_reply_markup(reply_markup=times_kb(lang, selected))
+    except Exception:
+        pass
+    count = len(selected)
+    if lang == "uz":
+        await callback.answer(f"✅ {count} ta tanlandi" if count else "⬜ Bekor qilindi")
+    else:
+        await callback.answer(f"✅ Выбрано: {count}" if count else "⬜ Снято")
 
 
 @router.callback_query(ProfileFSM.times, F.data == "times_done")
