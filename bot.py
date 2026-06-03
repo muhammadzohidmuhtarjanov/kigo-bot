@@ -34,17 +34,6 @@ async def main():
     dp.include_router(invite.router)
     dp.include_router(help_handler.router)
 
-    # catch-all: stale inline buttons after bot restart
-    from aiogram import F as AF
-    from aiogram.types import CallbackQuery as CQ
-
-    @dp.callback_query()
-    async def _stale_callback(cb: CQ):
-        await cb.answer(
-            "⚠️ Session eskirdi. /start yuboring. | Сессия устарела. Отправьте /start",
-            show_alert=True,
-        )
-
     log.info("Bot started.")
     try:
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
