@@ -45,6 +45,15 @@ CREATE TABLE IF NOT EXISTS game_ratings (
     created_at   TEXT DEFAULT (datetime('now')),
     UNIQUE(from_user_id, invite_id)
 );
+CREATE TABLE IF NOT EXISTS fsm_state (
+    bot_id  INTEGER NOT NULL,
+    chat_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    destiny TEXT    NOT NULL DEFAULT 'fsm',
+    state   TEXT,
+    data    TEXT    NOT NULL DEFAULT '{}',
+    PRIMARY KEY (bot_id, chat_id, user_id, destiny)
+);
 """
 
 

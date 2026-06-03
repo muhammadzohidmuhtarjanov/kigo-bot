@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
+from db.fsm_storage import SQLiteStorage
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
@@ -26,7 +26,7 @@ async def main():
         token=settings.BOT_TOKEN,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
-    dp = Dispatcher(storage=MemoryStorage())
+    dp = Dispatcher(storage=SQLiteStorage())
 
     dp.include_router(start.router)
     dp.include_router(profile.router)
