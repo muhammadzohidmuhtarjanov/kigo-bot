@@ -78,6 +78,13 @@ TEXTS = {
             "<i>Ko'p tanlash mumkin. ✅ = tanlangan.</i>"
         ),
         "min_time": "⚠️ Kamida 1 ta vaqt tanlang!",
+        "ask_phone": (
+            "📱 <b>Telefon raqamingizni ulashing</b>\n\n"
+            "Hamkor qabul qilganda, raqamingiz unga yuboriladi.\n"
+            "<i>O'tkazib yuborish ham mumkin.</i>"
+        ),
+        "phone_skip": "⏭️ O'tkazib yuborish",
+        "btn_share_phone": "📱 Raqamni ulashish",
         "profile_saved": (
             "✅ <b>Profil saqlandi!</b>\n\n"
             "/find — Hamkor qidirish\n"
@@ -110,18 +117,36 @@ TEXTS = {
         ),
         "invite_accepted_sender": (
             "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
-            "Ulaning: @{username}"
+            "📱 Tel: <b>{phone}</b>\n"
+            "💬 Telegram: @{username}"
         ),
-        "invite_accepted_sender_no_username": (
+        "invite_accepted_sender_phone_only": (
             "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
-            "Username yo'q, lekin ular siz bilan bog'lanishadi."
+            "📱 Tel: <b>{phone}</b>"
+        ),
+        "invite_accepted_sender_username_only": (
+            "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
+            "💬 Telegram: @{username}"
+        ),
+        "invite_accepted_sender_no_contact": (
+            "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
+            "Ular siz bilan bog'lanishadi."
         ),
         "invite_rejected_sender": "😔 <b>{name}</b> taklifingizni rad etdi.",
         "you_accepted": (
             "✅ Siz taklifni qabul qildingiz!\n\n"
-            "📱 Hamkoringiz: @{username}"
+            "📱 Hamkoringiz tel: <b>{phone}</b>\n"
+            "💬 Telegram: @{username}"
         ),
-        "you_accepted_no_username": "✅ Siz taklifni qabul qildingiz! Hamkoringiz siz bilan bog'lanadi.",
+        "you_accepted_phone_only": (
+            "✅ Siz taklifni qabul qildingiz!\n\n"
+            "📱 Hamkoringiz tel: <b>{phone}</b>"
+        ),
+        "you_accepted_username_only": (
+            "✅ Siz taklifni qabul qildingiz!\n\n"
+            "💬 Hamkoringiz: @{username}"
+        ),
+        "you_accepted_no_contact": "✅ Siz taklifni qabul qildingiz! Hamkoringiz siz bilan bog'lanadi.",
         "you_rejected": "❌ Siz taklifni rad etdingiz.",
         "no_invites": "📭 Hozircha kelgan taklif yo'q.",
         "invites_header": "📩 <b>Kelgan takliflar:</b>\n\n",
@@ -178,6 +203,13 @@ TEXTS = {
             "<i>Можно выбрать несколько. ✅ = выбрано.</i>"
         ),
         "min_time": "⚠️ Выберите хотя бы 1 время!",
+        "ask_phone": (
+            "📱 <b>Поделитесь номером телефона</b>\n\n"
+            "При принятии приглашения партнёр получит ваш номер.\n"
+            "<i>Можно пропустить.</i>"
+        ),
+        "phone_skip": "⏭️ Пропустить",
+        "btn_share_phone": "📱 Поделиться номером",
         "profile_saved": (
             "✅ <b>Профиль сохранён!</b>\n\n"
             "/find — Найти партнёра\n"
@@ -210,18 +242,36 @@ TEXTS = {
         ),
         "invite_accepted_sender": (
             "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
-            "Напишите: @{username}"
+            "📱 Тел: <b>{phone}</b>\n"
+            "💬 Telegram: @{username}"
         ),
-        "invite_accepted_sender_no_username": (
+        "invite_accepted_sender_phone_only": (
             "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
-            "Username не указан, они свяжутся с вами сами."
+            "📱 Тел: <b>{phone}</b>"
+        ),
+        "invite_accepted_sender_username_only": (
+            "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
+            "💬 Telegram: @{username}"
+        ),
+        "invite_accepted_sender_no_contact": (
+            "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
+            "Они свяжутся с вами сами."
         ),
         "invite_rejected_sender": "😔 <b>{name}</b> отклонил ваше приглашение.",
         "you_accepted": (
             "✅ Вы приняли приглашение!\n\n"
-            "📱 Партнёр: @{username}"
+            "📱 Тел партнёра: <b>{phone}</b>\n"
+            "💬 Telegram: @{username}"
         ),
-        "you_accepted_no_username": "✅ Вы приняли приглашение! Партнёр свяжется с вами.",
+        "you_accepted_phone_only": (
+            "✅ Вы приняли приглашение!\n\n"
+            "📱 Тел партнёра: <b>{phone}</b>"
+        ),
+        "you_accepted_username_only": (
+            "✅ Вы приняли приглашение!\n\n"
+            "💬 Партнёр: @{username}"
+        ),
+        "you_accepted_no_contact": "✅ Вы приняли приглашение! Партнёр свяжется с вами.",
         "you_rejected": "❌ Вы отклонили приглашение.",
         "no_invites": "📭 Пока нет входящих приглашений.",
         "invites_header": "📩 <b>Входящие приглашения:</b>\n\n",

@@ -9,6 +9,22 @@ from db.queries import (
 from utils.keyboards import invite_action_kb, rate_kb
 from utils.texts import t, sport_name, level_name, format_name
 
+
+def _contact_text(lang: str, prefix: str, partner: dict) -> str:
+    """Build accept notification with whatever contact info the partner shared."""
+    phone = partner.get("phone")
+    username = partner.get("username")
+    name = partner["name"]
+
+    if phone and username:
+        return t(lang, prefix, name=name, phone=phone, username=username)
+    elif phone:
+        return t(lang, f"{prefix}_phone_only", name=name, phone=phone)
+    elif username:
+        return t(lang, f"{prefix}_username_only", name=name, username=username)
+    else:
+        return t(lang, f"{prefix}_no_contact", name=name)
+
 router = Router()
 
 
@@ -78,30 +94,16 @@ async def accept_invite(callback: CallbackQuery):
     acceptor_lang = acceptor["lang"]
     sender_lang = sender["lang"]
 
-    acceptor_username = acceptor.get("username")
-    sender_username = sender.get("username")
+    # acceptor ni sender ga yuborish
+    await callback.message.edit_text(
+        _contact_text(sender_lang, "you_accepted", sender),
+        parse_mode="HTML",
+    )
 
-    if acceptor_username:
-        await callback.message.edit_text(
-            t(acceptor_lang, "you_accepted", username=acceptor_username),
-            parse_mode="HTML",
-        )
-    else:
-        await callback.message.edit_text(
-            t(acceptor_lang, "you_accepted_no_username"),
-            parse_mode="HTML",
-        )
-
-    if sender_username:
-        sender_notify = t(sender_lang, "invite_accepted_sender",
-                          name=acceptor["name"], username=acceptor_username or "—")
-    else:
-        sender_notify = t(sender_lang, "invite_accepted_sender_no_username",
-                          name=acceptor["name"])
-
+    # sender ni acceptor ga yuborish
     await callback.bot.send_message(
         chat_id=invite["from_user_id"],
-        text=sender_notify,
+        text=_contact_text(acceptor_lang, "invite_accepted_sender", acceptor),
         parse_mode="HTML",
     )
 

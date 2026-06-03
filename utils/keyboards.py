@@ -55,6 +55,17 @@ def city_kb(lang: str) -> ReplyKeyboardMarkup:
     )
 
 
+def phone_kb(lang: str) -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text=t(lang, "btn_share_phone"), request_contact=True)],
+            [KeyboardButton(text=t(lang, "phone_skip"))],
+        ],
+        resize_keyboard=True,
+        one_time_keyboard=True,
+    )
+
+
 def times_kb(lang: str, selected: list) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for time in TIMES:

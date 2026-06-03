@@ -4,6 +4,7 @@ _SQL = """
 CREATE TABLE IF NOT EXISTS users (
     id              INTEGER PRIMARY KEY,
     username        TEXT,
+    phone           TEXT,
     name            TEXT    NOT NULL,
     age_group       TEXT    NOT NULL,
     city            TEXT    NOT NULL,

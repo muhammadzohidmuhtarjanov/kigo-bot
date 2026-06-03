@@ -9,7 +9,7 @@ from db.queries import (
     create_or_update_user, delete_user_sports, save_user_sport, get_user,
 )
 from utils.keyboards import (
-    lang_kb, age_kb, sports_kb, level_kb, city_kb, times_kb, remove_kb,
+    lang_kb, age_kb, sports_kb, level_kb, city_kb, times_kb, phone_kb, remove_kb,
 )
 from utils.texts import t, SPORTS, sport_name
 
@@ -23,6 +23,7 @@ class ProfileFSM(StatesGroup):
     sport_level = State()
     city = State()
     times = State()
+    phone = State()
 
 
 @router.message(CommandStart())
@@ -222,8 +223,33 @@ async def times_done(callback: CallbackQuery, state: FSMContext):
         await callback.answer(t(lang, "min_time"), show_alert=True)
         return
 
-    user_id = callback.from_user.id
-    username = callback.from_user.username
+    await state.update_data(selected_times=selected)
+    await callback.message.edit_text(t(lang, "ask_phone"), parse_mode="HTML")
+    await callback.message.answer("👇", reply_markup=phone_kb(lang))
+    await state.set_state(ProfileFSM.phone)
+    await callback.answer()
+
+
+@router.message(ProfileFSM.phone, F.contact)
+async def get_phone_contact(message: Message, state: FSMContext):
+    phone = message.contact.phone_number
+    if not phone.startswith("+"):
+        phone = "+" + phone
+    await state.update_data(phone=phone)
+    await _save_profile(message, state)
+
+
+@router.message(ProfileFSM.phone, F.text)
+async def get_phone_skip(message: Message, state: FSMContext):
+    await state.update_data(phone=None)
+    await _save_profile(message, state)
+
+
+async def _save_profile(message: Message, state: FSMContext):
+    data = await state.get_data()
+    lang = data.get("lang", "uz")
+    user_id = message.from_user.id
+    username = message.from_user.username
 
     await create_or_update_user(
         user_id=user_id,
@@ -233,17 +259,21 @@ async def times_done(callback: CallbackQuery, state: FSMContext):
         city=data["city"],
         lat=data.get("lat"),
         lon=data.get("lon"),
-        available_times=selected,
+        available_times=data.get("selected_times", []),
         lang=lang,
+        phone=data.get("phone"),
     )
 
     await delete_user_sports(user_id)
     for sport, level in data.get("sport_levels", {}).items():
         await save_user_sport(user_id, sport, level)
 
-    await callback.message.edit_text(t(lang, "profile_saved"), parse_mode="HTML")
+    await message.answer(
+        t(lang, "profile_saved"),
+        parse_mode="HTML",
+        reply_markup=remove_kb(),
+    )
     await state.clear()
-    await callback.answer()
 
 
 async def _reverse_geocode(lat: float, lon: float) -> str:

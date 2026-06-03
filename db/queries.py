@@ -28,14 +28,16 @@ async def create_or_update_user(
     lon: Optional[float],
     available_times: list,
     lang: str,
+    phone: Optional[str] = None,
 ) -> dict:
     times_json = json.dumps(available_times)
     await db.execute(
         """
-        INSERT INTO users (id, username, name, age_group, city, lat, lon, available_times, lang)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        INSERT INTO users (id, username, phone, name, age_group, city, lat, lon, available_times, lang)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
         ON CONFLICT(id) DO UPDATE SET
             username        = EXCLUDED.username,
+            phone           = EXCLUDED.phone,
             name            = EXCLUDED.name,
             age_group       = EXCLUDED.age_group,
             city            = EXCLUDED.city,
@@ -45,7 +47,7 @@ async def create_or_update_user(
             lang            = EXCLUDED.lang,
             updated_at      = CURRENT_TIMESTAMP
         """,
-        user_id, username, name, age_group, city, lat, lon, times_json, lang,
+        user_id, username, phone, name, age_group, city, lat, lon, times_json, lang,
     )
     return await get_user(user_id)
 
