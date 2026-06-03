@@ -36,7 +36,7 @@ TIME_NAMES = {
         "morning":   "🌅 Ertalab",
         "afternoon": "☀️ Tushdan keyin",
         "evening":   "🌙 Kechqurun",
-        "weekend":   "🏖️ Dam olish kuni",
+        "weekend":   "🏖️ Dam olish",
     },
     "ru": {
         "morning":   "🌅 Утром",
@@ -52,256 +52,538 @@ LEVELS = ["beginner", "middle", "pro"]
 FORMATS = ["1x1", "2x2", "5x5", "any"]
 TIMES = ["morning", "afternoon", "evening", "weekend"]
 
+_D = "─────────────────────"
+
 TEXTS = {
     "uz": {
-        "choose_lang": "🌐 Tilni tanlang / Выберите язык:",
+        # ── Til tanlash ──────────────────────────────────────────────────────
+        "choose_lang": (
+            "🌐  <b>Tilni tanlang</b>\n"
+            "     <i>Выберите язык</i>"
+        ),
+
+        # ── Yangi foydalanuvchi ───────────────────────────────────────────────
         "welcome": (
-            "👋 <b>Kigo ga xush kelibsiz!</b>\n\n"
-            "Sport hamkor topish botiman.\n"
-            "Keling, profilingizni 2 daqiqada to'ldiramiz."
+            f"🏆  <b>KIGO BOT</b>\n"
+            f"{_D}\n"
+            "Sport hamkor topish uchun\n"
+            "eng qulay Telegram bot!\n\n"
+            "✅  Darajaga mos\n"
+            "✅  Shahringizda\n"
+            "✅  Qulay vaqtingizda\n\n"
+            f"{_D}\n"
+            "<i>Keling, profilingizni to'ldiramiz — atigi 2 daqiqa!</i>"
         ),
-        "ask_name": "1/6 — <b>Ismingiz nima?</b>\n\n<i>(2–30 belgi)</i>",
-        "invalid_name": "❌ Ism 2–30 belgi bo'lishi kerak. Qaytadan kiriting:",
-        "ask_age": "2/6 — <b>Yoshingizni tanlang:</b>",
+
+        # ── Qaytib kelgan foydalanuvchi ───────────────────────────────────────
+        "welcome_back": (
+            f"👋  <b>Salom, {'{name}'}!</b>\n"
+            f"{_D}\n"
+            "🏆  <b>KIGO BOT</b>  —  Sport hamkor\n\n"
+            "📍  {city}   |   ⭐  {rating}\n"
+            "{sports_line}\n"
+            f"{_D}"
+        ),
+
+        # ── Registratsiya bosqichlari ─────────────────────────────────────────
+        "ask_name": (
+            f"{_D}\n"
+            "✏️   <b>1 / 6  —  Ism</b>\n"
+            f"{_D}\n\n"
+            "Ismingizni kiriting:\n"
+            "<i>(2–30 belgi)</i>"
+        ),
+        "invalid_name": (
+            "⚠️  Ism <b>2–30</b> belgi bo'lishi kerak.\n"
+            "Qaytadan kiriting:"
+        ),
+        "ask_age": (
+            f"{_D}\n"
+            "🎂   <b>2 / 6  —  Yosh</b>\n"
+            f"{_D}\n\n"
+            "Yosh guruhingizni tanlang:"
+        ),
         "ask_sports": (
-            "3/6 — <b>Qaysi sportlar bilan shug'ullanasiz?</b>\n\n"
-            "<i>Ko'p tanlash mumkin. ✅ = tanlangan.</i>"
+            f"{_D}\n"
+            "🏅   <b>3 / 6  —  Sportlar</b>\n"
+            f"{_D}\n\n"
+            "Qaysi sportlar bilan shug'ullanasiz?\n"
+            "<i>Ko'p tanlash mumkin  ·  ✅ = tanlangan</i>"
         ),
-        "min_sport": "⚠️ Kamida 1 ta sport tanlang!",
-        "ask_level": "4/6 — <b>{sport}</b> bo'yicha darajangiz:",
+        "min_sport": "⚠️  Kamida <b>1 ta</b> sport tanlang!",
+        "ask_level": (
+            f"{_D}\n"
+            "📊   <b>4 / 6  —  Daraja</b>\n"
+            f"{_D}\n\n"
+            "<b>{sport}</b> bo'yicha darajangiz:"
+        ),
         "ask_city": (
-            "5/6 — <b>Shahringiz?</b>\n\n"
-            "<i>Shahar nomini yozing yoki 📍 GPS tugmasini bosing.</i>"
+            f"{_D}\n"
+            "📍   <b>5 / 6  —  Shahar</b>\n"
+            f"{_D}\n\n"
+            "Shahringizni yozing yoki\n"
+            "📍 GPS tugmasini bosing:"
         ),
         "ask_times": (
-            "6/6 — <b>Qachon o'ynashga qulay?</b>\n\n"
-            "<i>Ko'p tanlash mumkin. ✅ = tanlangan.</i>"
+            f"{_D}\n"
+            "⏰   <b>6 / 6  —  Vaqt</b>\n"
+            f"{_D}\n\n"
+            "Qachon o'ynashga qulay?\n"
+            "<i>Ko'p tanlash mumkin  ·  ✅ = tanlangan</i>"
         ),
-        "min_time": "⚠️ Kamida 1 ta vaqt tanlang!",
+        "min_time": "⚠️  Kamida <b>1 ta</b> vaqt tanlang!",
         "ask_phone": (
-            "📱 <b>Telefon raqamingizni ulashing</b>\n\n"
-            "Hamkor qabul qilganda, raqamingiz unga yuboriladi.\n"
-            "<i>O'tkazib yuborish ham mumkin.</i>"
+            f"{_D}\n"
+            "📱   <b>Telefon raqam</b>\n"
+            f"{_D}\n\n"
+            "Hamkor taklif qabul qilganda,\n"
+            "telefon raqamingiz unga yuboriladi.\n\n"
+            "<i>⏭️ O'tkazib yuborish ham mumkin</i>"
         ),
-        "phone_skip": "⏭️ O'tkazib yuborish",
-        "btn_share_phone": "📱 Raqamni ulashish",
+        "phone_skip": "⏭️  O'tkazib yuborish",
+        "btn_share_phone": "📱  Raqamni ulashish",
+
+        # ── Profil saqlandi ───────────────────────────────────────────────────
         "profile_saved": (
-            "✅ <b>Profil saqlandi!</b>\n\n"
-            "/find — Hamkor qidirish\n"
-            "/profile — Profilni ko'rish\n"
-            "/invites — Takliflar"
+            f"🎉  <b>Profil tayyor!</b>\n"
+            f"{_D}\n\n"
+            "Endi sport hamkor qidira olasiz.\n\n"
+            "🔍  /find  —  Hamkor qidirish\n"
+            "👤  /profile  —  Profilni ko'rish\n"
+            "📩  /invites  —  Takliflar\n"
+            "❓  /help  —  Yordam"
         ),
-        "profile_not_found": "❌ Profil topilmadi. /start buyrug'ini yuboring.",
+        "profile_not_found": (
+            "⚠️  <b>Profil topilmadi</b>\n\n"
+            "Boshlash uchun /start yuboring."
+        ),
+
+        # ── Profil ko'rinishi ─────────────────────────────────────────────────
         "your_profile": (
-            "👤 <b>Sizning profilingiz</b>\n\n"
-            "👤 Ism: <b>{name}</b>\n"
-            "🎂 Yosh: <b>{age}</b>\n"
-            "📍 Shahar: <b>{city}</b>\n"
-            "⏰ Qulay vaqt: <b>{times}</b>\n"
-            "⭐ Reyting: <b>{rating}</b> ({rating_count} baho)\n\n"
-            "<b>Sportlar:</b>\n{sports}"
+            f"👤  <b>Sizning profilingiz</b>\n"
+            f"{_D}\n\n"
+            "🏷  Ism:       <b>{name}</b>\n"
+            "🎂  Yosh:      <b>{age}</b>\n"
+            "📍  Shahar:   <b>{city}</b>\n"
+            "📱  Tel:        <b>{phone}</b>\n"
+            "⏰  Vaqt:      <b>{times}</b>\n"
+            "⭐  Reyting:  <b>{rating}</b>  <i>({rating_count} baho)</i>\n\n"
+            f"{_D}\n"
+            "<b>🏅 Sportlar:</b>\n"
+            "{sports}"
         ),
+
+        # ── Qidirish ──────────────────────────────────────────────────────────
         "no_matches": (
-            "😔 Hozircha mos hamkor topilmadi.\n\n"
-            "Ko'proq foydalanuvchi qo'shilgach qayta urinib ko'ring."
+            f"😔  <b>Hozircha mos hamkor topilmadi</b>\n"
+            f"{_D}\n\n"
+            "Ko'proq foydalanuvchi qo'shilgach\n"
+            "qayta urinib ko'ring.\n\n"
+            "<i>Botni do'stlaringizga ulashing!</i>"
         ),
-        "choose_sport_find": "🔍 Qaysi sport bo'yicha hamkor qidirasiz?",
-        "matches_header": "🎯 <b>{count} ta mos hamkor topildi!</b>\n\n",
-        "match_item": "{num}. <b>{name}</b> — {city}\n   {sport} | {level} | {format}\n   ⏰ {times}\n   Mos: <b>{score}%</b>\n\n",
-        "invite_sent": "✅ Taklif yuborildi! <b>{name}</b> qabul qilsa xabar beraman.",
-        "already_invited": "⚠️ Siz bu foydalanuvchiga allaqachon taklif yuborgansiz.",
+        "choose_sport_find": (
+            f"🔍  <b>Hamkor qidirish</b>\n"
+            f"{_D}\n\n"
+            "Qaysi sport bo'yicha hamkor qidirasiz?"
+        ),
+        "matches_header": (
+            f"🎯  <b>{'{count}'} ta mos hamkor topildi!</b>\n"
+            f"{_D}\n\n"
+        ),
+        "match_item": (
+            "👤  <b>{name}</b>  —  📍 {city}\n"
+            "    {sport}  ·  {level}\n"
+            "    ⏰ {times}\n"
+            "    🎯  Mos: <b>{score}%</b>\n\n"
+        ),
+
+        # ── Taklif ────────────────────────────────────────────────────────────
+        "invite_sent": (
+            "📨  <b>Taklif yuborildi!</b>\n\n"
+            "<b>{name}</b> qabul qilsa xabar beraman. 🔔"
+        ),
+        "already_invited": "⚠️  Bu foydalanuvchiga allaqachon taklif yuborgansiz.",
         "invite_received": (
-            "🏆 <b>Sizga hamkor taklifi keldi!</b>\n\n"
-            "👤 <b>{name}</b> ({city}) siz bilan {sport} o'ynashni taklif qilmoqda.\n"
-            "📊 Daraja: <b>{level}</b> | Format: <b>{format}</b>"
+            f"🔔  <b>Yangi hamkor taklifi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📍  {city}\n"
+            "🏅  {sport}  ·  {level}\n\n"
+            "<i>Qabul qilasizmi?</i>"
         ),
         "invite_accepted_sender": (
-            "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
-            "📱 Tel: <b>{phone}</b>\n"
-            "💬 Telegram: @{username}"
+            f"🎉  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Tel:  <code>{phone}</code>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Bog'laning va o'yin belgilang! 🏆</i>"
         ),
         "invite_accepted_sender_phone_only": (
-            "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
-            "📱 Tel: <b>{phone}</b>"
+            f"🎉  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Tel:  <code>{phone}</code>\n\n"
+            "<i>Bog'laning va o'yin belgilang! 🏆</i>"
         ),
         "invite_accepted_sender_username_only": (
-            "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
-            "💬 Telegram: @{username}"
+            f"🎉  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Bog'laning va o'yin belgilang! 🏆</i>"
         ),
         "invite_accepted_sender_no_contact": (
-            "🎉 <b>{name}</b> taklifingizni qabul qildi!\n\n"
-            "Ular siz bilan bog'lanishadi."
+            f"🎉  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n\n"
+            "<i>Ular siz bilan bog'lanishadi.</i>"
         ),
-        "invite_rejected_sender": "😔 <b>{name}</b> taklifingizni rad etdi.",
+        "invite_rejected_sender": (
+            "😔  <b>{name}</b> taklifingizni rad etdi.\n\n"
+            "<i>Boshqa hamkor qidiring!</i>"
+        ),
         "you_accepted": (
-            "✅ Siz taklifni qabul qildingiz!\n\n"
-            "📱 Hamkoringiz tel: <b>{phone}</b>\n"
-            "💬 Telegram: @{username}"
+            f"✅  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Tel:  <code>{phone}</code>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Bog'laning va o'yin belgilang! 🏆</i>"
         ),
         "you_accepted_phone_only": (
-            "✅ Siz taklifni qabul qildingiz!\n\n"
-            "📱 Hamkoringiz tel: <b>{phone}</b>"
+            f"✅  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Tel:  <code>{phone}</code>\n\n"
+            "<i>Bog'laning va o'yin belgilang! 🏆</i>"
         ),
         "you_accepted_username_only": (
-            "✅ Siz taklifni qabul qildingiz!\n\n"
-            "💬 Hamkoringiz: @{username}"
+            f"✅  <b>Taklif qabul qilindi!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Bog'laning va o'yin belgilang! 🏆</i>"
         ),
-        "you_accepted_no_contact": "✅ Siz taklifni qabul qildingiz! Hamkoringiz siz bilan bog'lanadi.",
-        "you_rejected": "❌ Siz taklifni rad etdingiz.",
-        "no_invites": "📭 Hozircha kelgan taklif yo'q.",
-        "invites_header": "📩 <b>Kelgan takliflar:</b>\n\n",
-        "invite_list_item": "{num}. <b>{name}</b> — {sport} ({level})\n",
-        "rate_partner": "⭐ <b>{name}</b> bilan o'yin qanday o'tdi? Baho bering:",
-        "rating_saved": "✅ Bahoyingiz saqlandi! Rahmat.",
-        "already_rated": "⚠️ Siz bu o'yin uchun allaqachon baho bergansiz.",
+        "you_accepted_no_contact": (
+            "✅  <b>Taklif qabul qilindi!</b>\n\n"
+            "<i>Hamkoringiz siz bilan bog'lanadi.</i>"
+        ),
+        "you_rejected": "❌  Siz taklifni rad etdingiz.",
+
+        # ── Takliflar ro'yxati ────────────────────────────────────────────────
+        "no_invites": (
+            f"📭  <b>Takliflar yo'q</b>\n"
+            f"{_D}\n\n"
+            "Hozircha hech kim taklif yubormagani.\n"
+            "<i>🔍 /find orqali o'zingiz qidiring!</i>"
+        ),
+        "invites_header": f"📩  <b>Kelgan takliflar</b>\n{_D}\n\n",
+        "invite_list_item": "▸  <b>{name}</b>  —  {sport}  ·  {level}\n",
+
+        # ── Reyting ───────────────────────────────────────────────────────────
+        "rate_partner": (
+            f"⭐  <b>O'yin qanday o'tdi?</b>\n"
+            f"{_D}\n\n"
+            "<b>{name}</b> ga baho bering:"
+        ),
+        "rating_saved": "✅  Bahoyingiz saqlandi! Rahmat 🙏",
+        "already_rated": "⚠️  Siz bu o'yin uchun allaqachon baho bergansiz.",
+
+        # ── Yordam ────────────────────────────────────────────────────────────
         "help_text": (
-            "📖 <b>Kigo Bot — Qo'llanma</b>\n\n"
-            "/start — Profilni boshlash yoki yangilash\n"
-            "/find — Hamkor qidirish\n"
-            "/profile — Profilni ko'rish\n"
-            "/invites — Kelgan takliflar\n"
-            "/help — Shu qo'llanma\n\n"
-            "<b>Qidiruv algoritmi:</b>\n"
-            "• Bir xil shahar: +40 ball\n"
-            "• Bir xil daraja: +30 ball\n"
-            "• Mos vaqt (har biri): +15 ball\n"
-            "• Bir xil format: +10 ball\n"
-            "• Yosh guruhi: +5 ball"
+            f"❓  <b>KIGO BOT  —  Qo'llanma</b>\n"
+            f"{_D}\n\n"
+            "🔍  /find      —  Hamkor qidirish\n"
+            "👤  /profile  —  Profilni ko'rish\n"
+            "📩  /invites  —  Kelgan takliflar\n"
+            "🔄  /start     —  Profilni yangilash\n"
+            "❓  /help      —  Shu qo'llanma\n\n"
+            f"{_D}\n"
+            "📊  <b>Qidiruv algoritmi:</b>\n\n"
+            "📍  Bir xil shahar          +40 ball\n"
+            "🎯  Bir xil daraja           +30 ball\n"
+            "⏰  Mos vaqt (har biri)   +15 ball\n"
+            "🔀  Bir xil format            +10 ball\n"
+            "🎂  Yosh guruhi              +5 ball"
         ),
-        "profile_edit_prompt": "Nima o'zgartirmoqchisiz?",
-        "send_gps": "📍 GPS yuborish",
-        "skip_gps": "✏️ Matn yozish",
-        "btn_done": "✅ Tayyor",
-        "btn_invite": "📨 Taklif yuborish",
-        "btn_accept": "✅ Qabul qilish",
-        "btn_reject": "❌ Rad etish",
-        "btn_edit_profile": "✏️ Profilni tahrirlash",
-        "btn_refresh": "🔄 Qayta qidirish",
+
+        # ── Tugmalar ──────────────────────────────────────────────────────────
+        "send_gps": "📍  GPS yuborish",
+        "btn_done": "✅  Tayyor",
+        "btn_invite": "📨  Taklif yuborish",
+        "btn_accept": "✅  Qabul qilish",
+        "btn_reject": "❌  Rad etish",
+        "btn_edit_profile": "✏️  Profilni yangilash",
+        "btn_refresh": "🔄  Qayta qidirish",
+        "btn_find": "🔍  Hamkor topish",
+        "btn_profile": "👤  Profilim",
+        "btn_invites": "📩  Takliflar",
+        "btn_help": "❓  Yordam",
+        "btn_update_profile": "✏️  Profilni yangilash",
     },
+
     "ru": {
-        "choose_lang": "🌐 Tilni tanlang / Выберите язык:",
+        # ── Язык ─────────────────────────────────────────────────────────────
+        "choose_lang": (
+            "🌐  <b>Tilni tanlang</b>\n"
+            "     <i>Выберите язык</i>"
+        ),
+
+        # ── Новый пользователь ────────────────────────────────────────────────
         "welcome": (
-            "👋 <b>Добро пожаловать в Kigo!</b>\n\n"
-            "Я бот для поиска партнёра по спорту.\n"
-            "Заполним ваш профиль за 2 минуты."
+            f"🏆  <b>KIGO BOT</b>\n"
+            f"{_D}\n"
+            "Бот для поиска партнёра по спорту!\n\n"
+            "✅  По уровню игры\n"
+            "✅  В вашем городе\n"
+            "✅  В удобное время\n\n"
+            f"{_D}\n"
+            "<i>Заполним профиль за 2 минуты!</i>"
         ),
-        "ask_name": "1/6 — <b>Как вас зовут?</b>\n\n<i>(2–30 символов)</i>",
-        "invalid_name": "❌ Имя должно быть 2–30 символов. Введите снова:",
-        "ask_age": "2/6 — <b>Выберите ваш возраст:</b>",
+
+        # ── Возвращающийся пользователь ───────────────────────────────────────
+        "welcome_back": (
+            f"👋  <b>Привет, {'{name}'}!</b>\n"
+            f"{_D}\n"
+            "🏆  <b>KIGO BOT</b>  —  Поиск партнёра\n\n"
+            "📍  {city}   |   ⭐  {rating}\n"
+            "{sports_line}\n"
+            f"{_D}"
+        ),
+
+        # ── Регистрация ───────────────────────────────────────────────────────
+        "ask_name": (
+            f"{_D}\n"
+            "✏️   <b>1 / 6  —  Имя</b>\n"
+            f"{_D}\n\n"
+            "Введите ваше имя:\n"
+            "<i>(2–30 символов)</i>"
+        ),
+        "invalid_name": (
+            "⚠️  Имя должно быть <b>2–30</b> символов.\n"
+            "Введите снова:"
+        ),
+        "ask_age": (
+            f"{_D}\n"
+            "🎂   <b>2 / 6  —  Возраст</b>\n"
+            f"{_D}\n\n"
+            "Выберите возрастную группу:"
+        ),
         "ask_sports": (
-            "3/6 — <b>Какими видами спорта вы занимаетесь?</b>\n\n"
-            "<i>Можно выбрать несколько. ✅ = выбрано.</i>"
+            f"{_D}\n"
+            "🏅   <b>3 / 6  —  Виды спорта</b>\n"
+            f"{_D}\n\n"
+            "Какими видами спорта занимаетесь?\n"
+            "<i>Можно несколько  ·  ✅ = выбрано</i>"
         ),
-        "min_sport": "⚠️ Выберите хотя бы 1 вид спорта!",
-        "ask_level": "4/6 — Ваш уровень в <b>{sport}</b>:",
+        "min_sport": "⚠️  Выберите хотя бы <b>1</b> вид спорта!",
+        "ask_level": (
+            f"{_D}\n"
+            "📊   <b>4 / 6  —  Уровень</b>\n"
+            f"{_D}\n\n"
+            "Ваш уровень в <b>{sport}</b>:"
+        ),
         "ask_city": (
-            "5/6 — <b>Ваш город?</b>\n\n"
-            "<i>Напишите название города или нажмите 📍 GPS.</i>"
+            f"{_D}\n"
+            "📍   <b>5 / 6  —  Город</b>\n"
+            f"{_D}\n\n"
+            "Напишите город или нажмите\n"
+            "📍 GPS:"
         ),
         "ask_times": (
-            "6/6 — <b>Когда удобно играть?</b>\n\n"
-            "<i>Можно выбрать несколько. ✅ = выбрано.</i>"
+            f"{_D}\n"
+            "⏰   <b>6 / 6  —  Время</b>\n"
+            f"{_D}\n\n"
+            "Когда удобно играть?\n"
+            "<i>Можно несколько  ·  ✅ = выбрано</i>"
         ),
-        "min_time": "⚠️ Выберите хотя бы 1 время!",
+        "min_time": "⚠️  Выберите хотя бы <b>1</b> время!",
         "ask_phone": (
-            "📱 <b>Поделитесь номером телефона</b>\n\n"
-            "При принятии приглашения партнёр получит ваш номер.\n"
-            "<i>Можно пропустить.</i>"
+            f"{_D}\n"
+            "📱   <b>Номер телефона</b>\n"
+            f"{_D}\n\n"
+            "При принятии приглашения\n"
+            "партнёр получит ваш номер.\n\n"
+            "<i>⏭️ Можно пропустить</i>"
         ),
-        "phone_skip": "⏭️ Пропустить",
-        "btn_share_phone": "📱 Поделиться номером",
+        "phone_skip": "⏭️  Пропустить",
+        "btn_share_phone": "📱  Поделиться номером",
+
+        # ── Профиль сохранён ──────────────────────────────────────────────────
         "profile_saved": (
-            "✅ <b>Профиль сохранён!</b>\n\n"
-            "/find — Найти партнёра\n"
-            "/profile — Посмотреть профиль\n"
-            "/invites — Приглашения"
+            f"🎉  <b>Профиль готов!</b>\n"
+            f"{_D}\n\n"
+            "Теперь можно искать партнёра!\n\n"
+            "🔍  /find      —  Найти партнёра\n"
+            "👤  /profile  —  Мой профиль\n"
+            "📩  /invites  —  Приглашения\n"
+            "❓  /help      —  Справка"
         ),
-        "profile_not_found": "❌ Профиль не найден. Отправьте /start",
+        "profile_not_found": (
+            "⚠️  <b>Профиль не найден</b>\n\n"
+            "Отправьте /start чтобы начать."
+        ),
+
+        # ── Просмотр профиля ─────────────────────────────────────────────────
         "your_profile": (
-            "👤 <b>Ваш профиль</b>\n\n"
-            "👤 Имя: <b>{name}</b>\n"
-            "🎂 Возраст: <b>{age}</b>\n"
-            "📍 Город: <b>{city}</b>\n"
-            "⏰ Время: <b>{times}</b>\n"
-            "⭐ Рейтинг: <b>{rating}</b> ({rating_count} оценок)\n\n"
-            "<b>Виды спорта:</b>\n{sports}"
+            f"👤  <b>Ваш профиль</b>\n"
+            f"{_D}\n\n"
+            "🏷  Имя:         <b>{name}</b>\n"
+            "🎂  Возраст:    <b>{age}</b>\n"
+            "📍  Город:       <b>{city}</b>\n"
+            "📱  Тел:           <b>{phone}</b>\n"
+            "⏰  Время:       <b>{times}</b>\n"
+            "⭐  Рейтинг:    <b>{rating}</b>  <i>({rating_count} оценок)</i>\n\n"
+            f"{_D}\n"
+            "<b>🏅 Виды спорта:</b>\n"
+            "{sports}"
         ),
+
+        # ── Поиск ─────────────────────────────────────────────────────────────
         "no_matches": (
-            "😔 Пока подходящих партнёров не найдено.\n\n"
-            "Попробуйте снова, когда появятся новые пользователи."
+            f"😔  <b>Партнёров пока нет</b>\n"
+            f"{_D}\n\n"
+            "Попробуйте позже, когда появятся\n"
+            "новые пользователи.\n\n"
+            "<i>Расскажите друзьям о боте!</i>"
         ),
-        "choose_sport_find": "🔍 По какому виду спорта ищете партнёра?",
-        "matches_header": "🎯 <b>Найдено {count} подходящих партнёров!</b>\n\n",
-        "match_item": "{num}. <b>{name}</b> — {city}\n   {sport} | {level} | {format}\n   ⏰ {times}\n   Совпадение: <b>{score}%</b>\n\n",
-        "invite_sent": "✅ Приглашение отправлено! Сообщу, когда <b>{name}</b> примет.",
-        "already_invited": "⚠️ Вы уже отправляли приглашение этому пользователю.",
+        "choose_sport_find": (
+            f"🔍  <b>Поиск партнёра</b>\n"
+            f"{_D}\n\n"
+            "По какому виду спорта ищете?"
+        ),
+        "matches_header": (
+            f"🎯  <b>Найдено {'{count}'} партнёров!</b>\n"
+            f"{_D}\n\n"
+        ),
+        "match_item": (
+            "👤  <b>{name}</b>  —  📍 {city}\n"
+            "    {sport}  ·  {level}\n"
+            "    ⏰ {times}\n"
+            "    🎯  Совпадение: <b>{score}%</b>\n\n"
+        ),
+
+        # ── Приглашения ───────────────────────────────────────────────────────
+        "invite_sent": (
+            "📨  <b>Приглашение отправлено!</b>\n\n"
+            "Сообщу, когда <b>{name}</b> примет. 🔔"
+        ),
+        "already_invited": "⚠️  Вы уже отправляли приглашение этому пользователю.",
         "invite_received": (
-            "🏆 <b>Вам пришло приглашение!</b>\n\n"
-            "👤 <b>{name}</b> ({city}) хочет сыграть с вами в {sport}.\n"
-            "📊 Уровень: <b>{level}</b> | Формат: <b>{format}</b>"
+            f"🔔  <b>Новое приглашение!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📍  {city}\n"
+            "🏅  {sport}  ·  {level}\n\n"
+            "<i>Принять приглашение?</i>"
         ),
         "invite_accepted_sender": (
-            "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
-            "📱 Тел: <b>{phone}</b>\n"
-            "💬 Telegram: @{username}"
+            f"🎉  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Тел:  <code>{phone}</code>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Свяжитесь и назначьте игру! 🏆</i>"
         ),
         "invite_accepted_sender_phone_only": (
-            "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
-            "📱 Тел: <b>{phone}</b>"
+            f"🎉  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Тел:  <code>{phone}</code>\n\n"
+            "<i>Свяжитесь и назначьте игру! 🏆</i>"
         ),
         "invite_accepted_sender_username_only": (
-            "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
-            "💬 Telegram: @{username}"
+            f"🎉  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Свяжитесь и назначьте игру! 🏆</i>"
         ),
         "invite_accepted_sender_no_contact": (
-            "🎉 <b>{name}</b> принял ваше приглашение!\n\n"
-            "Они свяжутся с вами сами."
+            f"🎉  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n\n"
+            "<i>Они свяжутся с вами сами.</i>"
         ),
-        "invite_rejected_sender": "😔 <b>{name}</b> отклонил ваше приглашение.",
+        "invite_rejected_sender": (
+            "😔  <b>{name}</b> отклонил приглашение.\n\n"
+            "<i>Поищите другого партнёра!</i>"
+        ),
         "you_accepted": (
-            "✅ Вы приняли приглашение!\n\n"
-            "📱 Тел партнёра: <b>{phone}</b>\n"
-            "💬 Telegram: @{username}"
+            f"✅  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Тел:  <code>{phone}</code>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Свяжитесь и назначьте игру! 🏆</i>"
         ),
         "you_accepted_phone_only": (
-            "✅ Вы приняли приглашение!\n\n"
-            "📱 Тел партнёра: <b>{phone}</b>"
+            f"✅  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "📱  Тел:  <code>{phone}</code>\n\n"
+            "<i>Свяжитесь и назначьте игру! 🏆</i>"
         ),
         "you_accepted_username_only": (
-            "✅ Вы приняли приглашение!\n\n"
-            "💬 Партнёр: @{username}"
+            f"✅  <b>Приглашение принято!</b>\n"
+            f"{_D}\n\n"
+            "👤  <b>{name}</b>\n"
+            "💬  Telegram:  @{username}\n\n"
+            "<i>Свяжитесь и назначьте игру! 🏆</i>"
         ),
-        "you_accepted_no_contact": "✅ Вы приняли приглашение! Партнёр свяжется с вами.",
-        "you_rejected": "❌ Вы отклонили приглашение.",
-        "no_invites": "📭 Пока нет входящих приглашений.",
-        "invites_header": "📩 <b>Входящие приглашения:</b>\n\n",
-        "invite_list_item": "{num}. <b>{name}</b> — {sport} ({level})\n",
-        "rate_partner": "⭐ Как прошла игра с <b>{name}</b>? Поставьте оценку:",
-        "rating_saved": "✅ Оценка сохранена! Спасибо.",
-        "already_rated": "⚠️ Вы уже оценивали эту игру.",
+        "you_accepted_no_contact": (
+            "✅  <b>Приглашение принято!</b>\n\n"
+            "<i>Партнёр свяжется с вами.</i>"
+        ),
+        "you_rejected": "❌  Вы отклонили приглашение.",
+
+        "no_invites": (
+            f"📭  <b>Приглашений нет</b>\n"
+            f"{_D}\n\n"
+            "Пока никто не приглашал.\n"
+            "<i>🔍 Поищите сами через /find!</i>"
+        ),
+        "invites_header": f"📩  <b>Входящие приглашения</b>\n{_D}\n\n",
+        "invite_list_item": "▸  <b>{name}</b>  —  {sport}  ·  {level}\n",
+
+        "rate_partner": (
+            f"⭐  <b>Как прошла игра?</b>\n"
+            f"{_D}\n\n"
+            "Оцените <b>{name}</b>:"
+        ),
+        "rating_saved": "✅  Оценка сохранена! Спасибо 🙏",
+        "already_rated": "⚠️  Вы уже оценивали эту игру.",
+
         "help_text": (
-            "📖 <b>Kigo Bot — Справка</b>\n\n"
-            "/start — Начать или обновить профиль\n"
-            "/find — Найти партнёра\n"
-            "/profile — Посмотреть профиль\n"
-            "/invites — Входящие приглашения\n"
-            "/help — Эта справка\n\n"
-            "<b>Алгоритм поиска:</b>\n"
-            "• Один город: +40 очков\n"
-            "• Одинаковый уровень: +30 очков\n"
-            "• Подходящее время (каждое): +15 очков\n"
-            "• Одинаковый формат: +10 очков\n"
-            "• Возрастная группа: +5 очков"
+            f"❓  <b>KIGO BOT  —  Справка</b>\n"
+            f"{_D}\n\n"
+            "🔍  /find      —  Найти партнёра\n"
+            "👤  /profile  —  Мой профиль\n"
+            "📩  /invites  —  Приглашения\n"
+            "🔄  /start     —  Обновить профиль\n"
+            "❓  /help      —  Справка\n\n"
+            f"{_D}\n"
+            "📊  <b>Алгоритм поиска:</b>\n\n"
+            "📍  Один город                   +40 очков\n"
+            "🎯  Одинаковый уровень      +30 очков\n"
+            "⏰  Совпадение по времени  +15 очков\n"
+            "🔀  Одинаковый формат        +10 очков\n"
+            "🎂  Возрастная группа          +5 очков"
         ),
-        "profile_edit_prompt": "Что хотите изменить?",
-        "send_gps": "📍 Отправить GPS",
-        "skip_gps": "✏️ Ввести текст",
-        "btn_done": "✅ Готово",
-        "btn_invite": "📨 Пригласить",
-        "btn_accept": "✅ Принять",
-        "btn_reject": "❌ Отклонить",
-        "btn_edit_profile": "✏️ Изменить профиль",
-        "btn_refresh": "🔄 Обновить поиск",
+
+        "send_gps": "📍  Отправить GPS",
+        "btn_done": "✅  Готово",
+        "btn_invite": "📨  Пригласить",
+        "btn_accept": "✅  Принять",
+        "btn_reject": "❌  Отклонить",
+        "btn_edit_profile": "✏️  Изменить профиль",
+        "btn_refresh": "🔄  Обновить поиск",
+        "btn_find": "🔍  Найти партнёра",
+        "btn_profile": "👤  Мой профиль",
+        "btn_invites": "📩  Приглашения",
+        "btn_help": "❓  Справка",
+        "btn_update_profile": "✏️  Обновить профиль",
     },
 }
 
@@ -323,9 +605,9 @@ def format_name(fmt: str, lang: str) -> str:
     return FORMAT_NAMES.get(lang, FORMAT_NAMES["uz"]).get(fmt, fmt)
 
 
-def time_name(time: str, lang: str) -> str:
-    return TIME_NAMES.get(lang, TIME_NAMES["uz"]).get(time, time)
+def time_name(time_key: str, lang: str) -> str:
+    return TIME_NAMES.get(lang, TIME_NAMES["uz"]).get(time_key, time_key)
 
 
 def times_display(times: list, lang: str) -> str:
-    return ", ".join(time_name(t_item, lang) for t_item in times)
+    return "  ·  ".join(time_name(t_item, lang) for t_item in times)

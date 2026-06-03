@@ -7,11 +7,15 @@ from aiogram.filters import CommandStart
 
 from db.queries import (
     create_or_update_user, delete_user_sports, save_user_sport, get_user,
+    get_user_sports, get_pending_invites,
 )
 from utils.keyboards import (
-    lang_kb, age_kb, sports_kb, level_kb, city_kb, times_kb, phone_kb, remove_kb,
+    lang_kb, age_kb, sports_kb, level_kb, city_kb, times_kb, phone_kb,
+    remove_kb, main_menu_kb, sport_select_kb, invite_action_kb, profile_kb,
 )
-from utils.texts import t, SPORTS, sport_name
+from utils.texts import (
+    t, SPORTS, sport_name, level_name, format_name, times_display,
+)
 
 router = Router()
 
@@ -26,9 +30,48 @@ class ProfileFSM(StatesGroup):
     phone = State()
 
 
+# ── helpers ──────────────────────────────────────────────────────────────────
+
+def _fmt_sports(sports: list, lang: str) -> str:
+    if not sports:
+        return "—"
+    return "\n".join(
+        f"• {sport_name(s['sport'], lang)} — {level_name(s['level'], lang)}"
+        for s in sports
+    )
+
+
+async def _send_main_menu(target: Message, user: dict):
+    """Send welcome_back + main menu. target must be a Message (or callback.message)."""
+    lang = user["lang"]
+    user_sports = await get_user_sports(user["id"])
+    rating_str = f"{user['rating']:.1f}" if user["rating_count"] > 0 else "—"
+    sports_line = "  ·  ".join(
+        sport_name(s["sport"], lang) for s in user_sports
+    ) if user_sports else "—"
+
+    await target.answer(
+        t(lang, "welcome_back",
+          name=user["name"],
+          city=user["city"],
+          rating=rating_str,
+          sports_line=sports_line),
+        parse_mode="HTML",
+        reply_markup=main_menu_kb(lang),
+    )
+
+
+# ── /start ───────────────────────────────────────────────────────────────────
+
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
+    user = await get_user(message.from_user.id)
+
+    if user:
+        await _send_main_menu(message, user)
+        return
+
     await message.answer(t("uz", "choose_lang"), reply_markup=lang_kb())
 
 
@@ -273,8 +316,109 @@ async def _save_profile(message: Message, state: FSMContext):
         parse_mode="HTML",
         reply_markup=remove_kb(),
     )
+
+    user = await get_user(user_id)
+    if user:
+        await _send_main_menu(message, user)
+
     await state.clear()
 
+
+# ── main menu callbacks ───────────────────────────────────────────────────────
+
+@router.callback_query(F.data == "menu:find")
+async def menu_find(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    user = await get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+    lang = user["lang"]
+    user_sports = await get_user_sports(user_id)
+    if not user_sports:
+        await callback.message.answer(t(lang, "profile_not_found"), parse_mode="HTML")
+        await callback.answer()
+        return
+    await callback.message.answer(
+        t(lang, "choose_sport_find"),
+        parse_mode="HTML",
+        reply_markup=sport_select_kb(lang, user_sports),
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:profile")
+async def menu_profile(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    user = await get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+    lang = user["lang"]
+    user_sports = await get_user_sports(user_id)
+    rating_str = f"{user['rating']:.1f}" if user["rating_count"] > 0 else "—"
+    phone = user.get("phone") or "—"
+    times = times_display(user["available_times"] or [], lang)
+    await callback.message.answer(
+        t(lang, "your_profile",
+          name=user["name"],
+          age=user["age_group"],
+          city=user["city"],
+          phone=phone,
+          times=times,
+          rating=rating_str,
+          rating_count=user["rating_count"],
+          sports=_fmt_sports(user_sports, lang)),
+        parse_mode="HTML",
+        reply_markup=profile_kb(lang),
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:invites")
+async def menu_invites(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    user = await get_user(user_id)
+    if not user:
+        await callback.answer()
+        return
+    lang = user["lang"]
+    invites = await get_pending_invites(user_id)
+    if not invites:
+        await callback.message.answer(t(lang, "no_invites"), parse_mode="HTML")
+        await callback.answer()
+        return
+    for inv in invites:
+        await callback.message.answer(
+            t(lang, "invite_received",
+              name=inv["from_name"],
+              city=inv["from_city"],
+              sport=sport_name(inv["sport"], lang),
+              level=level_name(inv.get("from_level") or "beginner", lang),
+              format=format_name(inv.get("from_format") or "any", lang)),
+            parse_mode="HTML",
+            reply_markup=invite_action_kb(lang, inv["id"]),
+        )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:help")
+async def menu_help(callback: CallbackQuery):
+    user_id = callback.from_user.id
+    user = await get_user(user_id)
+    lang = user["lang"] if user else "uz"
+    await callback.message.answer(t(lang, "help_text"), parse_mode="HTML")
+    await callback.answer()
+
+
+@router.callback_query(F.data == "menu:update")
+async def menu_update(callback: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await callback.message.answer(t("uz", "choose_lang"), reply_markup=lang_kb())
+    await callback.answer()
+
+
+# ── reverse geocode ───────────────────────────────────────────────────────────
 
 async def _reverse_geocode(lat: float, lon: float) -> str:
     try:

@@ -134,5 +134,16 @@ def profile_kb(lang: str) -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
+def main_menu_kb(lang: str) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text=t(lang, "btn_find"),           callback_data="menu:find")
+    builder.button(text=t(lang, "btn_profile"),        callback_data="menu:profile")
+    builder.button(text=t(lang, "btn_invites"),        callback_data="menu:invites")
+    builder.button(text=t(lang, "btn_help"),           callback_data="menu:help")
+    builder.button(text=t(lang, "btn_update_profile"), callback_data="menu:update")
+    builder.adjust(2, 2, 1)
+    return builder.as_markup()
+
+
 def remove_kb() -> ReplyKeyboardRemove:
     return ReplyKeyboardRemove()

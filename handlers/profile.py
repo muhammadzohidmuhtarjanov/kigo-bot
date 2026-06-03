@@ -1,9 +1,10 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
+from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
 
 from db.queries import get_user, get_user_sports
-from utils.keyboards import profile_kb
+from utils.keyboards import profile_kb, lang_kb
 from utils.texts import t, sport_name, level_name, format_name, times_display
 
 router = Router()
@@ -23,11 +24,13 @@ async def cmd_profile(message: Message):
     sports_text = _format_sports(sports, lang)
     rating_str = f"{user['rating']:.1f}" if user["rating_count"] > 0 else "—"
 
+    phone = user.get("phone") or "—"
     await message.answer(
         t(lang, "your_profile",
           name=user["name"],
           age=user["age_group"],
           city=user["city"],
+          phone=phone,
           times=times_display(user["available_times"] or [], lang),
           rating=rating_str,
           rating_count=user["rating_count"],
@@ -38,8 +41,9 @@ async def cmd_profile(message: Message):
 
 
 @router.callback_query(F.data == "edit_profile")
-async def edit_profile(callback: CallbackQuery):
-    await callback.message.answer("/start buyrug'ini yuboring profilni yangilash uchun.\n\nОтправьте /start чтобы обновить профиль.")
+async def edit_profile(callback: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await callback.message.answer(t("uz", "choose_lang"), reply_markup=lang_kb())
     await callback.answer()
 
 
