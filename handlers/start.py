@@ -291,25 +291,46 @@ async def get_phone_skip(message: Message, state: FSMContext):
 async def _save_profile(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("lang", "uz")
+
+    name = data.get("name")
+    age_group = data.get("age_group")
+    city = data.get("city")
+
+    if not name or not age_group or not city:
+        await message.answer(
+            "⚠️ Ma'lumotlar to'liq emas. /start bosib qaytadan boshlang.\n"
+            "⚠️ Данные неполные. Нажмите /start чтобы начать снова.",
+            reply_markup=remove_kb(),
+        )
+        await state.clear()
+        return
+
     user_id = message.from_user.id
     username = message.from_user.username
 
-    await create_or_update_user(
-        user_id=user_id,
-        username=username,
-        name=data["name"],
-        age_group=data["age_group"],
-        city=data["city"],
-        lat=data.get("lat"),
-        lon=data.get("lon"),
-        available_times=data.get("selected_times", []),
-        lang=lang,
-        phone=data.get("phone"),
-    )
-
-    await delete_user_sports(user_id)
-    for sport, level in data.get("sport_levels", {}).items():
-        await save_user_sport(user_id, sport, level)
+    try:
+        await create_or_update_user(
+            user_id=user_id,
+            username=username,
+            name=name,
+            age_group=age_group,
+            city=city,
+            lat=data.get("lat"),
+            lon=data.get("lon"),
+            available_times=data.get("selected_times", []),
+            lang=lang,
+            phone=data.get("phone"),
+        )
+        await delete_user_sports(user_id)
+        for sport, level in data.get("sport_levels", {}).items():
+            await save_user_sport(user_id, sport, level)
+    except Exception as e:
+        await message.answer(
+            f"⚠️ Saqlashda xatolik: {e}\n/start bosib qaytadan urinib ko'ring.",
+            reply_markup=remove_kb(),
+        )
+        await state.clear()
+        return
 
     await message.answer(
         t(lang, "profile_saved"),
