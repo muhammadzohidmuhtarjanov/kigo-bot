@@ -1,0 +1,7 @@
+kigo.db
+kigo.db-shm
+kigo.db-wal
+__pycache__/
+*.pyc
+.env
+*.log
